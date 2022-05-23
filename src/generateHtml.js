@@ -1,3 +1,4 @@
+// Generates employee cards based on data received from prompt answers
 generateCard = function(data) {
     let employeeCard = '';
     data.forEach(employee => {
@@ -32,6 +33,7 @@ generateCard = function(data) {
     return employeeCard;
 }
 
+// Generates main html page
 generatePage = function(data) {
     return `
     <!DOCTYPE html>

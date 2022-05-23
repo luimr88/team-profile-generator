@@ -5,6 +5,7 @@ const Manager = require('./lib/Manager');
 const Intern = require('./lib/Intern');
 const Engineer = require('./lib/Engineer');
 
+// Initial prompt questions
 teamQuestions = function() {
     inquirer.prompt([
         {
@@ -66,6 +67,7 @@ teamQuestions = function() {
     })
 }
 
+// Adding manager prompt questions
 managerPrompt = function() {
     inquirer.prompt([
         {
@@ -127,6 +129,7 @@ managerPrompt = function() {
     })
 }
 
+// Adding enginner prompt questions
 engineerPrompt = function() {
     inquirer.prompt([
         {
@@ -188,6 +191,7 @@ engineerPrompt = function() {
     })
 }
 
+// Adding intern prompt questions
 internPrompt = function() {
     inquirer.prompt([
         {
@@ -249,6 +253,7 @@ internPrompt = function() {
     })
 }
 
+// Prompt that will ask user if they desire to add more employees
 addMore = function() {
     inquirer.prompt([
         {
@@ -285,8 +290,10 @@ addMore = function() {
     
 }
 
+// Writes html file
 generateHtml = function(data) {
     writeFile(data)
 }
 
+// Initializes code
 teamQuestions();
