@@ -1,6 +1,7 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
 const generatePage = require('./src/generateHtml.js');
+const { writeFile } = require('./utils/generate-page.js');
 const teamArray = [];
 const Manager = require('./lib/Manager');
 const Intern = require('./lib/Intern');
@@ -10,7 +11,7 @@ function teamQuestions() {
     inquirer.prompt([
         {
             type: 'input',
-            name: 'manager-info',
+            name: 'name',
             message: "Let's start with adding a manager to the system. Please enter the manager's name:",
             validate: input => {
                 if (input) {
@@ -59,23 +60,12 @@ function teamQuestions() {
                     return false
                 }
             }
-        },
-        {
-            type: 'list',
-            name: 'employeeType',
-            message: 'What type of employee do you want to add next?',
-            choices: ['Manager', 'Engineer', 'Intern']
         }
     ])
-        .then(({ employeeType }) => {
-            if (employeeType === 'Manager') {
-                 return managerPrompt();
-            } else if (employeeType === 'Engineer') {
-                return engineerPrompt();
-            } else {
-                return internPrompt();
-            }
-        })
+    .then(responseData => {
+        teamArray.push(new Manager(responseData.name, responseData.id, responseData.email, responseData.officeNumber));
+        addMore();
+    })
 }
 
 function managerPrompt() {
@@ -131,16 +121,11 @@ function managerPrompt() {
                     return false
                 }
             }
-        },
-        {
-            type: 'list',
-            name: 'add',
-            message: 'Would you like to add more employees?',
-            choices: ['Yes', 'No']
         }
     ])
-    .then(({ add }) => {
-        addMore(add);
+    .then(responseData => {
+        teamArray.push(new Manager(responseData.name, responseData.id, responseData.email, responseData.officeNumber));
+        addMore();
     })
 }
 
@@ -148,7 +133,7 @@ function engineerPrompt() {
     inquirer.prompt([
         {
             type: 'input',
-            name: 'engineer-name',
+            name: 'name',
             message: "Please enter the engineer's name:",
             validate: input => {
                 if (input) {
@@ -197,16 +182,11 @@ function engineerPrompt() {
                     return false
                 }
             }
-        },
-        {
-            type: 'list',
-            name: 'add',
-            message: 'Would you like to add more employees?',
-            choices: ['Yes', 'No']
         }
     ])
-    .then(({ add }) => {
-        addMore(add);
+    .then(responseData => {
+        teamArray.push(new Engineer(responseData.name, responseData.id, responseData.email, responseData.github));
+        addMore();
     })
 }
 
@@ -214,7 +194,7 @@ function internPrompt() {
     inquirer.prompt([
         {
             type: 'input',
-            name: 'manager-name',
+            name: 'name',
             message: "Please enter the intern's name:",
             validate: input => {
                 if (input) {
@@ -263,7 +243,16 @@ function internPrompt() {
                     return false
                 }
             }
-        },
+        }
+    ])
+    .then(responseData => {
+        teamArray.push(new Intern(responseData.name, responseData.id, responseData.email, responseData.school));
+        addMore();
+    })
+}
+
+function addMore() {
+    inquirer.prompt([
         {
             type: 'list',
             name: 'add',
@@ -272,44 +261,41 @@ function internPrompt() {
         }
     ])
     .then(({ add }) => {
-        addMore(add);
-    })
-}
-
-function addMore(add) {
-    if (add === 'Yes') {
-        inquirer.prompt([
-            {
-                type: 'list',
-                name: 'employeeType',
-                message: 'What type of employee do you want to add next?',
-                choices: ['Manager', 'Engineer', 'Intern']
-            }
-        ])
-            .then(({ employeeType }) => {
-                if (employeeType === 'Manager') {
-                    return managerPrompt();
-                } else if (employeeType === 'Engineer') {
-                    return engineerPrompt();
-                } else {
-                    return internPrompt();
+        if (add === 'Yes') {
+            inquirer.prompt([
+                {
+                    type: 'list',
+                    name: 'employeeType',
+                    message: 'What type of employee do you want to add next?',
+                    choices: ['Manager', 'Engineer', 'Intern']
                 }
-            })
-    } else {
-        // generateHtml();
-        console.log('generating html...')
-    }
-
+            ])
+                .then(({ employeeType }) => {
+                    if (employeeType === 'Manager') {
+                        return managerPrompt();
+                    } else if (employeeType === 'Engineer') {
+                        return engineerPrompt();
+                    } else {
+                        return internPrompt();
+                    }
+                })
+        } else {
+            generateHtml(teamArray);
+            console.log('generating html...')
+        }
+    })
+    
 }
 
-
-// function init() {
-//     inquirer.prompt(promptQuestions)
-//         .then(responseData => {
-//             console.log('Creating HTML')
-//             return writeToFile('./dist/index.html', generatePage(responseData));
-//         })
-//         .catch(err => console.log(err));
+// // Function that will write file.
+// function writeToFile(fileName, data) {
+//     return fs.writeFileSync(fileName, data);
 // }
+
+
+function generateHtml(data) {
+    writeFile(data)
+    console.log(teamArray)
+    }
 
 teamQuestions();
