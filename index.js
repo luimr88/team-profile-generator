@@ -70,7 +70,7 @@ managerPrompt = function() {
     inquirer.prompt([
         {
             type: 'input',
-            name: 'manager-name',
+            name: 'name',
             message: "Please enter the manager's name:",
             validate: input => {
                 if (input) {
