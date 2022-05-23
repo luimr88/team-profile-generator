@@ -1,16 +1,16 @@
 const fs = require('fs');
-const pageBuilder = require('../src/generateHtml.js')
+const generatePage = require('../src/generateHtml.js')
 
 const writeFile = fileContent => {
     return new Promise((resolve, reject) => {
-      fs.writeFile('./dist/index.html', pageBuilder(fileContent), err => {
+      fs.writeFile('./dist/index.html', generatePage(fileContent), err => {
         if (err) {
           reject(err);
           return;
         }
         resolve({
           ok: true,
-          message: 'Your team profile has been created!'
+          message: 'Team profile has been generated'
         });
       });
     });

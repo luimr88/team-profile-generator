@@ -1,13 +1,11 @@
 const inquirer = require('inquirer');
-const fs = require('fs');
-const generatePage = require('./src/generateHtml.js');
 const { writeFile } = require('./utils/generate-page.js');
 const teamArray = [];
 const Manager = require('./lib/Manager');
 const Intern = require('./lib/Intern');
 const Engineer = require('./lib/Engineer');
 
-function teamQuestions() {
+teamQuestions = function() {
     inquirer.prompt([
         {
             type: 'input',
@@ -68,7 +66,7 @@ function teamQuestions() {
     })
 }
 
-function managerPrompt() {
+managerPrompt = function() {
     inquirer.prompt([
         {
             type: 'input',
@@ -129,7 +127,7 @@ function managerPrompt() {
     })
 }
 
-function engineerPrompt() {
+engineerPrompt = function() {
     inquirer.prompt([
         {
             type: 'input',
@@ -173,7 +171,7 @@ function engineerPrompt() {
         {
             type: 'input',
             name: 'github',
-            message: "Please enter the engineer's github profile link:",
+            message: "Please enter the engineer's github profile name:",
             validate: input => {
                 if (input) {
                     return true;
@@ -190,7 +188,7 @@ function engineerPrompt() {
     })
 }
 
-function internPrompt() {
+internPrompt = function() {
     inquirer.prompt([
         {
             type: 'input',
@@ -251,7 +249,7 @@ function internPrompt() {
     })
 }
 
-function addMore() {
+addMore = function() {
     inquirer.prompt([
         {
             type: 'list',
@@ -287,15 +285,8 @@ function addMore() {
     
 }
 
-// // Function that will write file.
-// function writeToFile(fileName, data) {
-//     return fs.writeFileSync(fileName, data);
-// }
-
-
-function generateHtml(data) {
+generateHtml = function(data) {
     writeFile(data)
-    console.log(teamArray)
-    }
+}
 
 teamQuestions();
