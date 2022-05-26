@@ -25,7 +25,7 @@ test('gets managers email using getEmail method', () => {
 
 test('gets managers office number using getOfficeNumber method', () => {
     const manager = new Manager('Peter', '1', 'peter@gmail.com', '10');
-    expect(manager.getOfficeNumber()).toBe('10');
+    expect(manager.getOfficeNumber()).toBe('Office Number: 10');
 });
 
 test('checks role of employee', () => {
